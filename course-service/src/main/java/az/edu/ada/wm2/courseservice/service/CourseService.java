@@ -96,9 +96,9 @@ public class CourseService {
                 savedEnrollment.getId(),
                 savedEnrollment.getCourseId(),
                 savedEnrollment.getStudentId(),
+                savedEnrollment.getEnrolledAt(),
                 "Student enrolled successfully."
-        );
-    }
+        );}
 
     public CourseStudentsResponseDto getCourseStudents(Long courseId) {
         log.debug("Fetching students for course {}", courseId);

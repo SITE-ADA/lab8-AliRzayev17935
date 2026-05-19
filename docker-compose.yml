@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_DB: studentDB
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: passwords
     ports:
       - "5432:5432"
     volumes:
@@ -25,7 +25,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://student-db:5432/studentDB
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_PASSWORD: passwords
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: "true"
       SERVER_PORT: 9090
@@ -37,7 +37,7 @@ services:
     environment:
       POSTGRES_DB: courseDB
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: passwordc
     ports:
       - "5433:5432"
     volumes:
@@ -59,7 +59,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://course-db:5432/courseDB
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_PASSWORD: passwordc
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: "true"
       STUDENT_SERVICE_BASE_URL: http://student-service:9090

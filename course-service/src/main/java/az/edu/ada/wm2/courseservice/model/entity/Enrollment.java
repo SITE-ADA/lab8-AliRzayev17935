@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,4 +37,13 @@ public class Enrollment {
     @Column(name = "student_id", nullable = false)
     private Long studentId;
 
+    @Column(name = "enrolled_at", nullable = false, updatable = false)
+    private LocalDateTime enrolledAt;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.enrolledAt == null) {
+            this.enrolledAt = LocalDateTime.now();
+        }
+    }
 }
