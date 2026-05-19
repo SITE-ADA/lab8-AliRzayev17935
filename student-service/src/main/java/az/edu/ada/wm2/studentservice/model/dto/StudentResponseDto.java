@@ -12,14 +12,18 @@ import lombok.Setter;
 @AllArgsConstructor
 public class StudentResponseDto {
 
-    @Schema(description = "Student unique identifier", example = "1")
+    @Schema(description = "Tələbənin unikal identifikatoru", example = "1")
     private Long id;
-    @Schema(description = "Student first name", example = "Nicat")
+
+    @Schema(description = "Tələbənin adı", example = "Nicat")
     private String firstName;
-    @Schema(description = "Student last name", example = "Aliyev")
+
+    @Schema(description = "Tələbənin soyadı", example = "Aliyev")
     private String lastName;
-    @Schema(description = "Student email address", example = "nicat.aliyev@example.com")
+
+    @Schema(description = "Tələbənin elektron poçt ünvanı", example = "nicat.aliyev@example.com")
     private String email;
-    @Schema(description = "Student age", example = "20")
+
+    @Schema(description = "Tələbənin yaşı", example = "20")
     private Integer age;
 }

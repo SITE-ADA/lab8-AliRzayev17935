@@ -13,18 +13,18 @@ import lombok.Setter;
 @AllArgsConstructor
 public class EnrollmentResponseDto {
 
-    @Schema(description = "Enrollment id", example = "10")
+    @Schema(description = "Qeydiyyatın id-si", example = "10")
     private Long enrollmentId;
 
-    @Schema(description = "Course id", example = "1")
+    @Schema(description = "Kursun id-si", example = "1")
     private Long courseId;
 
-    @Schema(description = "Student id", example = "15")
+    @Schema(description = "Tələbənin id-si", example = "15")
     private Long studentId;
 
-    @Schema(description = "Date and time the student was enrolled", example = "2026-05-19T18:45:30")
+    @Schema(description = "Tələbənin kursa qeydiyyatdan keçdiyi tarix və vaxt", example = "2026-05-19T18:45:30")
     private LocalDateTime enrolledAt;
 
-    @Schema(description = "Operation result message", example = "Student enrolled successfully.")
+    @Schema(description = "Əməliyyatın nəticə mesajı", example = "Tələbə uğurla qeydiyyatdan keçirildi.")
     private String message;
 }

@@ -19,38 +19,47 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/courses")
 @RequiredArgsConstructor
-@Tag(name = "Courses", description = "Course CRUD and enrollment endpoints")
+@Tag(name = "Kurslar", description = "Kursların CRUD əməliyyatları və qeydiyyat son nöqtələri")
 public class CourseController {
 
     private final CourseService courseService;
 
     @PostMapping
-    @Operation(summary = "Create course", description = "Creates a new course.")
+    @Operation(summary = "Kurs yarat", description = "Yeni kurs yaradır.")
     public ResponseEntity<CourseResponseDto> createCourse(@Valid @RequestBody CourseRequestDto requestDto) {
         CourseResponseDto createdCourse = courseService.createCourse(requestDto);
         return new ResponseEntity<>(createdCourse, HttpStatus.CREATED);
     }
 
     @GetMapping
-    @Operation(summary = "Get all courses", description = "Returns all courses.")
+    @Operation(summary = "Bütün kursları al", description = "Bütün kursların siyahısını qaytarır.")
     public ResponseEntity<List<CourseResponseDto>> getAllCourses() {
         return ResponseEntity.ok(courseService.getAllCourses());
     }
 
+    @GetMapping("/search-by-student")
+    @Operation(
+            summary = "Tələbənin adına görə kursları al",
+            description = "Adı və ya soyadı verilmiş axtarış mətninə uyğun gələn tələbələrə aid bütün kursları qaytarır."
+    )
+    public ResponseEntity<List<CourseResponseDto>> getCoursesByStudentName(@RequestParam String name) {
+        return ResponseEntity.ok(courseService.getCoursesByStudentName(name));
+    }
+
     @GetMapping("/{id}")
-    @Operation(summary = "Get course by id", description = "Returns a single course by id.")
+    @Operation(summary = "Kursu id-yə görə al", description = "Verilmiş id-yə uyğun kursu qaytarır.")
     public ResponseEntity<CourseResponseDto> getCourseById(@PathVariable Long id) {
         return ResponseEntity.ok(courseService.getCourseById(id));
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update course", description = "Updates a course by id.")
+    @Operation(summary = "Kursu yenilə", description = "Verilmiş id-yə uyğun kursu yeniləyir.")
     public ResponseEntity<CourseResponseDto> updateCourse(
             @PathVariable Long id,
             @Valid @RequestBody CourseRequestDto requestDto) {
@@ -58,7 +67,7 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete course", description = "Deletes a course by id.")
+    @Operation(summary = "Kursu sil", description = "Verilmiş id-yə uyğun kursu silir.")
     public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
         return ResponseEntity.noContent().build();
@@ -66,8 +75,8 @@ public class CourseController {
 
     @PostMapping("/{courseId}/students/{studentId}")
     @Operation(
-            summary = "Enroll student",
-            description = "Enrolls a student into a course after validating the student via Feign client."
+            summary = "Tələbəni kursa qeyd et",
+            description = "Feign client vasitəsilə tələbə yoxlanıldıqdan və ön şərt kursu təsdiqləndikdən sonra tələbəni kursa qeyd edir."
     )
     public ResponseEntity<EnrollmentResponseDto> enrollStudent(
             @PathVariable Long courseId,
@@ -78,18 +87,10 @@ public class CourseController {
 
     @GetMapping("/{courseId}/students")
     @Operation(
-            summary = "List course students",
-            description = "Returns detailed student data by calling student-service through RestTemplate."
+            summary = "Kursun tələbələrini al",
+            description = "RestTemplate vasitəsilə student-service-dən tələbələrin ətraflı məlumatlarını qaytarır."
     )
     public ResponseEntity<CourseStudentsResponseDto> getCourseStudents(@PathVariable Long courseId) {
         return ResponseEntity.ok(courseService.getCourseStudents(courseId));
-    }
-    @GetMapping("/search-by-student")
-    @Operation(
-            summary = "Get courses by student name",
-            description = "Returns all courses associated with students whose first or last name matches the search term."
-    )
-    public ResponseEntity<List<CourseResponseDto>> getCoursesByStudentName(@RequestParam String name) {
-        return ResponseEntity.ok(courseService.getCoursesByStudentName(name));
     }
 }

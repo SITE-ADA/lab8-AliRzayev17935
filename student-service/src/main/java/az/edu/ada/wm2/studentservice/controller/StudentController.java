@@ -17,45 +17,47 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/students")
 @RequiredArgsConstructor
-@Tag(name = "Students", description = "Student management endpoints")
+@Tag(name = "Tələbələr", description = "Tələbələrin idarə olunması üçün son nöqtələr")
 public class StudentController {
 
     private final StudentService studentService;
 
     @PostMapping
-    @Operation(summary = "Create student", description = "Creates a new student record.")
+    @Operation(summary = "Tələbə yarat", description = "Yeni tələbə qeydiyyatı yaradır.")
     public ResponseEntity<StudentResponseDto> createStudent(@Valid @RequestBody StudentRequestDto requestDto) {
         StudentResponseDto createdStudent = studentService.createStudent(requestDto);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
 
     @GetMapping
-    @Operation(summary = "Get all students", description = "Returns all students.")
+    @Operation(summary = "Bütün tələbələri al", description = "Bütün tələbələrin siyahısını qaytarır.")
     public ResponseEntity<List<StudentResponseDto>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
-    
+
     @GetMapping("/search")
-    @Operation(summary = "Search students by name",
-            description = "Returns students whose first or last name contains the given value (case-insensitive).")
+    @Operation(
+            summary = "Tələbələri ada görə axtar",
+            description = "Adı və ya soyadı verilmiş mətni ehtiva edən tələbələri qaytarır (böyük-kiçik hərflərə həssas deyil)."
+    )
     public ResponseEntity<List<StudentResponseDto>> searchStudentsByName(@RequestParam String name) {
         return ResponseEntity.ok(studentService.searchStudentsByName(name));
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get student by id", description = "Returns a single student by id.")
+    @Operation(summary = "Tələbəni id-yə görə al", description = "Verilmiş id-yə uyğun tələbəni qaytarır.")
     public ResponseEntity<StudentResponseDto> getStudentById(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getStudentById(id));
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update student", description = "Updates an existing student by id.")
+    @Operation(summary = "Tələbəni yenilə", description = "Mövcud tələbənin məlumatlarını id-yə görə yeniləyir.")
     public ResponseEntity<StudentResponseDto> updateStudent(
             @PathVariable Long id,
             @Valid @RequestBody StudentRequestDto requestDto) {
@@ -63,8 +65,8 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete student", description = "Deletes a student by id.")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
+    @Operation(summary = "Tələbəni sil", description = "Verilmiş id-yə uyğun tələbəni silir.")
+    public ResponseEntity<StudentResponseDto> deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.noContent().build();
     }

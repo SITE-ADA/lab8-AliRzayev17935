@@ -118,7 +118,7 @@ public class CourseService {
                 savedEnrollment.getCourseId(),
                 savedEnrollment.getStudentId(),
                 savedEnrollment.getEnrolledAt(),
-                "Student enrolled successfully."
+                "Tələbə uğurla qeydiyyatdan keçirildi."
         );}
 
     public CourseStudentsResponseDto getCourseStudents(Long courseId) {
