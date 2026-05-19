@@ -115,6 +115,40 @@ public class CourseService {
 
         return new CourseStudentsResponseDto(course.getId(), course.getTitle(), students);
     }
+    public List<CourseResponseDto> getCoursesByStudentName(String name) {
+        log.debug("Searching courses for students matching name: {}", name);
+
+        List<StudentDto> matchingStudents;
+        try {
+            matchingStudents = studentFeignClient.searchStudentsByName(name);
+        } catch (FeignException ex) {
+            throw new StudentServiceCommunicationException(
+                    "Could not search students in student-service.");
+        }
+
+        if (matchingStudents.isEmpty()) {
+            return List.of();
+        }
+
+        List<Long> studentIds = matchingStudents.stream()
+                .map(StudentDto::getId)
+                .toList();
+
+        List<Long> courseIds = enrollmentRepository.findByStudentIdIn(studentIds)
+                .stream()
+                .map(Enrollment::getCourseId)
+                .distinct()
+                .toList();
+
+        if (courseIds.isEmpty()) {
+            return List.of();
+        }
+
+        return courseRepository.findAllById(courseIds)
+                .stream()
+                .map(this::toCourseResponseDto)
+                .toList();
+    }
 
     private void validateStudentWithFeign(Long studentId) {
         try {

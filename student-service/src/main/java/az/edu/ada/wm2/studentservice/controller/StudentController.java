@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1/students")
@@ -38,6 +39,13 @@ public class StudentController {
     @Operation(summary = "Get all students", description = "Returns all students.")
     public ResponseEntity<List<StudentResponseDto>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
+    }
+    
+    @GetMapping("/search")
+    @Operation(summary = "Search students by name",
+            description = "Returns students whose first or last name contains the given value (case-insensitive).")
+    public ResponseEntity<List<StudentResponseDto>> searchStudentsByName(@RequestParam String name) {
+        return ResponseEntity.ok(studentService.searchStudentsByName(name));
     }
 
     @GetMapping("/{id}")
